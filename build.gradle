@@ -1,0 +1,59 @@
+group 'me.umov'
+version '1.0.0'
+
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.11
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ["src", "vars"]
+        }
+        resources {
+            srcDirs = ["resources"]
+        }
+    }
+    test {
+        groovy {
+            srcDir "test"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://repo.jenkins-ci.org/releases/'
+    }
+}
+
+dependencies {
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.5.7'
+
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-autoscaling', version: '1.11.495'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-elasticloadbalancing', version: '1.11.495'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-elasticloadbalancingv2', version: '1.11.47'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: '1.11.495'
+
+
+    compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'com.cloudbees', name: 'groovy-cps', version: '1.29'
+    compile (group: 'org.jenkins-ci.main', name: 'jenkins-core', version: '2.177') {
+        exclude group: 'org.jenkins-ci', module: 'trilead-ssh2'
+        exclude group: 'org.springframework'
+    }
+
+    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.2-groovy-2.5'
+    testCompile group: 'cglib', name: 'cglib-nodep', version: '2.2'
+    testCompile group: 'org.objenesis', name: 'objenesis', version: '3.0.1'
+}
+
+test {
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+}
